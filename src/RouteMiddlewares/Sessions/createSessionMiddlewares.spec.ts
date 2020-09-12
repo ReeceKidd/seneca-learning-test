@@ -43,7 +43,10 @@ describe('createSessionMiddlewares', () => {
 
             const sessionModel = jest.fn(() => ({ save }));
 
-            const response: any = { locals: {} };
+            const user = {
+                _id: 'userId',
+            };
+            const response: any = { locals: { user } };
             const courseId = 'courseId';
             const request: any = {
                 params: {},
