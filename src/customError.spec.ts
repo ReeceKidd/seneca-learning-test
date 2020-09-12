@@ -24,6 +24,17 @@ describe('customError', () => {
         expect(httpStatusCode).toBe(400);
     });
 
+    test(`creates correct error when type is set to GetCourseNoCourseFound`, () => {
+        expect.assertions(3);
+
+        const customError = new CustomError(ErrorType.GetCourseNoCourseFound);
+        const { code, message, httpStatusCode } = customError;
+
+        expect(code).toBe(`400-03`);
+        expect(message).toBe('Course does not exist.');
+        expect(httpStatusCode).toBe(400);
+    });
+
     test(`creates correct error when type is set to InternalServerError`, () => {
         expect.assertions(3);
 
@@ -75,6 +86,50 @@ describe('customError', () => {
         const { code, message, httpStatusCode } = customError;
 
         expect(code).toBe(`500-05`);
+        expect(message).toBe('Internal Server Error.');
+        expect(httpStatusCode).toBe(500);
+    });
+
+    test(`creates correct error when type is set to RetrieveCourseMiddleware`, () => {
+        expect.assertions(3);
+
+        const customError = new CustomError(ErrorType.RetrieveCourseMiddleware);
+        const { code, message, httpStatusCode } = customError;
+
+        expect(code).toBe(`500-06`);
+        expect(message).toBe('Internal Server Error.');
+        expect(httpStatusCode).toBe(500);
+    });
+
+    test(`creates correct error when type is set to SendCourseMiddleware`, () => {
+        expect.assertions(3);
+
+        const customError = new CustomError(ErrorType.SendCourseMiddleware);
+        const { code, message, httpStatusCode } = customError;
+
+        expect(code).toBe(`500-07`);
+        expect(message).toBe('Internal Server Error.');
+        expect(httpStatusCode).toBe(500);
+    });
+
+    test(`creates correct error when type is set to IncreaseStatsForCourseMiddleware`, () => {
+        expect.assertions(3);
+
+        const customError = new CustomError(ErrorType.IncreaseStatsForCourseMiddleware);
+        const { code, message, httpStatusCode } = customError;
+
+        expect(code).toBe(`500-08`);
+        expect(message).toBe('Internal Server Error.');
+        expect(httpStatusCode).toBe(500);
+    });
+
+    test(`creates correct error when type is set to UpdateAverageForCourseMiddleware`, () => {
+        expect.assertions(3);
+
+        const customError = new CustomError(ErrorType.UpdateAverageForCourseMiddleware);
+        const { code, message, httpStatusCode } = customError;
+
+        expect(code).toBe(`500-09`);
         expect(message).toBe('Internal Server Error.');
         expect(httpStatusCode).toBe(500);
     });

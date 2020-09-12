@@ -9,6 +9,11 @@ export enum ErrorType {
     AuthUserDoesNotExist,
     CreateCourseSessionFromRequestMiddleware,
     SendFormattedCourseSessionMiddleware,
+    RetrieveCourseMiddleware,
+    SendCourseMiddleware,
+    GetCourseNoCourseFound,
+    IncreaseStatsForCourseMiddleware,
+    UpdateAverageForCourseMiddleware,
 }
 
 const internalServerMessage = 'Internal Server Error.';
@@ -42,6 +47,13 @@ export class CustomError extends Error {
                     httpStatusCode: ResponseCodes.badRequest,
                 };
 
+            case ErrorType.GetCourseNoCourseFound:
+                return {
+                    code: `${ResponseCodes.badRequest}-03`,
+                    message: 'Course does not exist.',
+                    httpStatusCode: ResponseCodes.badRequest,
+                };
+
             case ErrorType.RetrieveUserIdFromHeaderMiddleware:
                 return {
                     code: `${ResponseCodes.warning}-02`,
@@ -66,6 +78,34 @@ export class CustomError extends Error {
             case ErrorType.SendFormattedCourseSessionMiddleware:
                 return {
                     code: `${ResponseCodes.warning}-05`,
+                    message: internalServerMessage,
+                    httpStatusCode: ResponseCodes.warning,
+                };
+
+            case ErrorType.RetrieveCourseMiddleware:
+                return {
+                    code: `${ResponseCodes.warning}-06`,
+                    message: internalServerMessage,
+                    httpStatusCode: ResponseCodes.warning,
+                };
+
+            case ErrorType.SendCourseMiddleware:
+                return {
+                    code: `${ResponseCodes.warning}-07`,
+                    message: internalServerMessage,
+                    httpStatusCode: ResponseCodes.warning,
+                };
+
+            case ErrorType.IncreaseStatsForCourseMiddleware:
+                return {
+                    code: `${ResponseCodes.warning}-08`,
+                    message: internalServerMessage,
+                    httpStatusCode: ResponseCodes.warning,
+                };
+
+            case ErrorType.UpdateAverageForCourseMiddleware:
+                return {
+                    code: `${ResponseCodes.warning}-09`,
                     message: internalServerMessage,
                     httpStatusCode: ResponseCodes.warning,
                 };
