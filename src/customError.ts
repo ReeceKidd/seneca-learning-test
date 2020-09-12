@@ -14,6 +14,9 @@ export enum ErrorType {
     GetCourseNoCourseFound,
     IncreaseStatsForCourseMiddleware,
     UpdateAverageForCourseMiddleware,
+    SendUserMiddleware,
+    RetrieveUserMiddleware,
+    GetUserNoUserFound,
 }
 
 const internalServerMessage = 'Internal Server Error.';
@@ -51,6 +54,13 @@ export class CustomError extends Error {
                 return {
                     code: `${ResponseCodes.badRequest}-03`,
                     message: 'Course does not exist.',
+                    httpStatusCode: ResponseCodes.badRequest,
+                };
+
+            case ErrorType.GetUserNoUserFound:
+                return {
+                    code: `${ResponseCodes.badRequest}-04`,
+                    message: 'User does not exist.',
                     httpStatusCode: ResponseCodes.badRequest,
                 };
 
@@ -106,6 +116,20 @@ export class CustomError extends Error {
             case ErrorType.UpdateAverageForCourseMiddleware:
                 return {
                     code: `${ResponseCodes.warning}-09`,
+                    message: internalServerMessage,
+                    httpStatusCode: ResponseCodes.warning,
+                };
+
+            case ErrorType.SendUserMiddleware:
+                return {
+                    code: `${ResponseCodes.warning}-10`,
+                    message: internalServerMessage,
+                    httpStatusCode: ResponseCodes.warning,
+                };
+
+            case ErrorType.RetrieveUserMiddleware:
+                return {
+                    code: `${ResponseCodes.warning}-11`,
                     message: internalServerMessage,
                     httpStatusCode: ResponseCodes.warning,
                 };
