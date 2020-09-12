@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
 
-export type ModuleModel = { modulename: string } & mongoose.Document;
+export type ModuleModel = { name: string; type: string } & mongoose.Document;
 
 export const moduleSchema = new mongoose.Schema(
     {
