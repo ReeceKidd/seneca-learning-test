@@ -1,13 +1,13 @@
 import { Router } from 'express';
-import { authenticationMiddlewares } from '../../../SharedMiddleware/authenticationMiddlewares';
 import { getSessionMiddlewares } from '../../../RouteMiddlewares/Sessions/getSessionMiddlewares';
-
-const usersRouter = Router();
-
-usersRouter.use(...authenticationMiddlewares);
+import { createUserMiddlewares } from '../../../RouteMiddlewares/Users/createUserMiddlewares';
 
 export const userId = 'userId';
 
+const usersRouter = Router();
+
 usersRouter.get(`/${userId}`, ...getSessionMiddlewares);
+
+usersRouter.post('/', ...createUserMiddlewares);
 
 export { usersRouter };
