@@ -21,3 +21,5 @@ Had to create some additional routes for the integration tests like POST /course
 Would have liked to do more work on the integration test SDK but it didn't seem relevant for the task.
 
 Joi validation could be improved throughout to check if the ID parameter's follow the rules of the UUID.
+
+I could have created another resource abstraction for CourseSession to clean up the organization of the RouteMiddlewares folder.

@@ -243,4 +243,26 @@ describe('customError', () => {
         expect(message).toBe('Internal Server Error.');
         expect(httpStatusCode).toBe(500);
     });
+
+    test(`creates correct error when type is set to CreateSessionFromRequestMiddleware`, () => {
+        expect.assertions(3);
+
+        const customError = new CustomError(ErrorType.CreateSessionFromRequestMiddleware);
+        const { code, message, httpStatusCode } = customError;
+
+        expect(code).toBe(`500-18`);
+        expect(message).toBe('Internal Server Error.');
+        expect(httpStatusCode).toBe(500);
+    });
+
+    test(`creates correct error when type is set to SendFormattedSessionMiddleware`, () => {
+        expect.assertions(3);
+
+        const customError = new CustomError(ErrorType.SendFormattedSessionMiddleware);
+        const { code, message, httpStatusCode } = customError;
+
+        expect(code).toBe(`500-19`);
+        expect(message).toBe('Internal Server Error.');
+        expect(httpStatusCode).toBe(500);
+    });
 });

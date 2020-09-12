@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose';
 
 export type CourseModel = {
-    userId: string;
+    name: string;
     totalModulesStudied: number;
     averageScore: number;
     timeStudied: number;
@@ -9,22 +9,19 @@ export type CourseModel = {
 
 export const courseSchema = new mongoose.Schema(
     {
-        userId: {
+        name: {
             type: String,
             required: true,
         },
         totalModulesStudied: {
             type: Number,
-            required: true,
             default: 0,
         },
         averageScore: {
             type: Number,
-            required: true,
         },
         timeStudied: {
-            type: String,
-            required: true,
+            type: Number,
             default: 0,
         },
     },

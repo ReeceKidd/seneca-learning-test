@@ -20,15 +20,15 @@ export const sessionSchema = new mongoose.Schema(
         },
         totalModulesStudied: {
             type: Number,
-            required: true,
+            default: 0,
         },
         averageScore: {
             type: Number,
-            required: true,
+            default: 0,
         },
         timeStudied: {
-            type: String,
-            required: true,
+            type: Number,
+            default: 0,
         },
     },
     {

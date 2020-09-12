@@ -5,7 +5,7 @@ import { Routes } from '../../src/Routers/versions/v1';
 import ApiVersions from '../../src/Server/versions';
 import { CourseModel } from '../../src/Models/Course';
 
-export const getCourse = async ({
+export const createCourse = async ({
     expressApp,
     userId,
     courseName,
@@ -14,9 +14,9 @@ export const getCourse = async ({
     userId: string;
     courseName: string;
 }): Promise<CourseModel> => {
-    const course = await supertest(expressApp)
+    const courseResponse = await supertest(expressApp)
         .post(`/${ApiVersions.v1}/${Routes.courses}`)
         .set('X-User-Id', userId)
         .send({ name: courseName });
-    return course.body as CourseModel;
+    return courseResponse.body as CourseModel;
 };
