@@ -8,6 +8,7 @@ import app from '../src/app';
 import { getDatabaseURI } from './setup/getDatabaseURI';
 
 import { getUser } from './helpers/getUser';
+import { getCourse } from './helpers/getCourse';
 
 jest.setTimeout(120000);
 
@@ -33,8 +34,9 @@ describe('Question One', () => {
 
         const user = await getUser(expressApp);
 
-        console.log(user);
+        const course = await getCourse({ expressApp, userId: user._id, courseName: 'Biology' });
 
         expect(user).toBeDefined();
+        expect(course).toBeDefined();
     });
 });
