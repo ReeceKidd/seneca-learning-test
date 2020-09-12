@@ -48,8 +48,4 @@ export const sendCourseMiddleware = (request: Request, response: Response, next:
     }
 };
 
-export const getOneCourseMiddlewares = [
-    courseParamsValidationMiddleware,
-    retrieveCourseMiddleware,
-    sendCourseMiddleware,
-];
+export const getCourseMiddlewares = [courseParamsValidationMiddleware, retrieveCourseMiddleware, sendCourseMiddleware];

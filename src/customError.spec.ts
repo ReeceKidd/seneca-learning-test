@@ -46,6 +46,17 @@ describe('customError', () => {
         expect(httpStatusCode).toBe(400);
     });
 
+    test(`creates correct error when type is set to GetSessionNoSessionFound`, () => {
+        expect.assertions(3);
+
+        const customError = new CustomError(ErrorType.GetSessionNoSessionFound);
+        const { code, message, httpStatusCode } = customError;
+
+        expect(code).toBe(`400-05`);
+        expect(message).toBe('Session does not exist.');
+        expect(httpStatusCode).toBe(400);
+    });
+
     test(`creates correct error when type is set to InternalServerError`, () => {
         expect.assertions(3);
 
@@ -163,6 +174,28 @@ describe('customError', () => {
         const { code, message, httpStatusCode } = customError;
 
         expect(code).toBe(`500-11`);
+        expect(message).toBe('Internal Server Error.');
+        expect(httpStatusCode).toBe(500);
+    });
+
+    test(`creates correct error when type is set to RetrieveSessionMiddleware`, () => {
+        expect.assertions(3);
+
+        const customError = new CustomError(ErrorType.RetrieveSessionMiddleware);
+        const { code, message, httpStatusCode } = customError;
+
+        expect(code).toBe(`500-12`);
+        expect(message).toBe('Internal Server Error.');
+        expect(httpStatusCode).toBe(500);
+    });
+
+    test(`creates correct error when type is set to SendSessionMiddleware`, () => {
+        expect.assertions(3);
+
+        const customError = new CustomError(ErrorType.SendSessionMiddleware);
+        const { code, message, httpStatusCode } = customError;
+
+        expect(code).toBe(`500-13`);
         expect(message).toBe('Internal Server Error.');
         expect(httpStatusCode).toBe(500);
     });

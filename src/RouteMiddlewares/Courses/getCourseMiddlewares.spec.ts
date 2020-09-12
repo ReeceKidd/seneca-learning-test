@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
-    getOneCourseMiddlewares,
+    getCourseMiddlewares,
     retrieveCourseMiddleware,
     getRetrieveCourseMiddleware,
     sendCourseMiddleware,
@@ -116,13 +116,13 @@ describe('sendCourseMiddleware', () => {
     });
 });
 
-describe('getOneCourseMiddlewares', () => {
+describe('getCourseMiddlewares', () => {
     test('that getCourseMiddlewares are defined in the correct order', () => {
         expect.assertions(4);
 
-        expect(getOneCourseMiddlewares.length).toEqual(3);
-        expect(getOneCourseMiddlewares[0]).toEqual(courseParamsValidationMiddleware);
-        expect(getOneCourseMiddlewares[1]).toEqual(retrieveCourseMiddleware);
-        expect(getOneCourseMiddlewares[2]).toEqual(sendCourseMiddleware);
+        expect(getCourseMiddlewares.length).toEqual(3);
+        expect(getCourseMiddlewares[0]).toEqual(courseParamsValidationMiddleware);
+        expect(getCourseMiddlewares[1]).toEqual(retrieveCourseMiddleware);
+        expect(getCourseMiddlewares[2]).toEqual(sendCourseMiddleware);
     });
 });
