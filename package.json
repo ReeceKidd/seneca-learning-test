@@ -20,11 +20,13 @@
     "author": "Reece Kidd",
     "license": "ISC",
     "dependencies": {
+        "@types/supertest": "^2.0.10",
         "cors": "^2.8.5",
         "dotenv": "^8.2.0",
         "express": "^4.17.1",
         "joi": "^13.6.0",
-        "mongoose": "^5.9.4"
+        "mongoose": "^5.9.4",
+        "supertest": "^4.0.2"
     },
     "devDependencies": {
         "@types/jest": "^26.0.13",

@@ -20,6 +20,8 @@ export enum ErrorType {
     GetSessionNoSessionFound,
     RetrieveSessionMiddleware,
     SendSessionMiddleware,
+    CreateUserFromRequestMiddleware,
+    SendFormattedUserMiddleware,
 }
 
 const internalServerMessage = 'Internal Server Error.';
@@ -154,6 +156,20 @@ export class CustomError extends Error {
             case ErrorType.SendSessionMiddleware:
                 return {
                     code: `${ResponseCodes.warning}-13`,
+                    message: internalServerMessage,
+                    httpStatusCode: ResponseCodes.warning,
+                };
+
+            case ErrorType.CreateUserFromRequestMiddleware:
+                return {
+                    code: `${ResponseCodes.warning}-14`,
+                    message: internalServerMessage,
+                    httpStatusCode: ResponseCodes.warning,
+                };
+
+            case ErrorType.SendFormattedUserMiddleware:
+                return {
+                    code: `${ResponseCodes.warning}-15`,
                     message: internalServerMessage,
                     httpStatusCode: ResponseCodes.warning,
                 };

@@ -8,6 +8,7 @@ import { CustomError, ErrorType } from '../../customError';
 
 const getSessionParamsValidationSchema = {
     sessionId: Joi.string().required(),
+    courseId: Joi.string().required(),
 };
 
 export const sessionParamsValidationMiddleware = (request: Request, response: Response, next: NextFunction): void => {
