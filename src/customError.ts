@@ -22,6 +22,8 @@ export enum ErrorType {
     SendSessionMiddleware,
     CreateUserFromRequestMiddleware,
     SendFormattedUserMiddleware,
+    CreateCourseFromRequestMiddleware,
+    SendFormattedCourseMiddleware,
 }
 
 const internalServerMessage = 'Internal Server Error.';
@@ -170,6 +172,20 @@ export class CustomError extends Error {
             case ErrorType.SendFormattedUserMiddleware:
                 return {
                     code: `${ResponseCodes.warning}-15`,
+                    message: internalServerMessage,
+                    httpStatusCode: ResponseCodes.warning,
+                };
+
+            case ErrorType.CreateCourseFromRequestMiddleware:
+                return {
+                    code: `${ResponseCodes.warning}-16`,
+                    message: internalServerMessage,
+                    httpStatusCode: ResponseCodes.warning,
+                };
+
+            case ErrorType.SendFormattedCourseMiddleware:
+                return {
+                    code: `${ResponseCodes.warning}-17`,
                     message: internalServerMessage,
                     httpStatusCode: ResponseCodes.warning,
                 };

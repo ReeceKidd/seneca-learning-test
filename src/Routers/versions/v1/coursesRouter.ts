@@ -1,8 +1,9 @@
 import { Router } from 'express';
 import { authenticationMiddlewares } from '../../../SharedMiddleware/authenticationMiddlewares';
-import { createCourseSessionMiddlewares } from '../../../RouteMiddlewares/Courses/createCourseSessionMiddlewares';
+import { createCourseSessionMiddlewares } from '../../../RouteMiddlewares/Sessions/createCourseSessionMiddlewares';
 import { getCourseMiddlewares } from '../../../RouteMiddlewares/Courses/getCourseMiddlewares';
 import { sessionsRouter } from './sessionsRouter';
+import { createCourseMiddlewares } from '../../../RouteMiddlewares/Courses/createCourseMiddlewares';
 
 const coursesRouter = Router();
 
@@ -13,6 +14,8 @@ export const courseId = 'courseId';
 export enum CourseRoutes {
     sessions = 'sessions',
 }
+
+coursesRouter.post('/', ...createCourseMiddlewares);
 
 coursesRouter.post(`/:${courseId}`, ...createCourseSessionMiddlewares);
 

@@ -11,13 +11,14 @@ import { ErrorType, CustomError } from '../../customError';
 
 describe(`sessionParamsValidationMiddleware`, () => {
     const sessionId = '12345678';
+    const courseId = 'abcdefghi';
 
     test('calls next() when correct params are supplied', () => {
         expect.assertions(1);
         const send = jest.fn();
         const status = jest.fn(() => ({ send }));
         const request: any = {
-            params: { sessionId },
+            params: { sessionId, courseId },
         };
         const response: any = {
             status,

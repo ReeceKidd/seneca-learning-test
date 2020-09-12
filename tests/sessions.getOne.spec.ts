@@ -1,12 +1,13 @@
+import { Mongoose } from 'mongoose';
+
 import { isTestEnvironment } from './setup/isTestEnvironment';
 import { setupDatabase } from './setup/setupDatabase';
 import { tearDownDatabase } from './setup/tearDownDatabase';
-import { Mongoose } from 'mongoose';
 import { disconnectDatabase } from './setup/disconnectDatabase';
 import app from '../src/app';
 import { getDatabaseURI } from './setup/getDatabaseURI';
-import supertest from 'supertest';
-import { Routes } from '../src/Routers/versions/v1';
+
+import { getUser } from './helpers/getUser';
 
 jest.setTimeout(120000);
 
@@ -30,9 +31,9 @@ describe('Question One', () => {
     test(testName, async () => {
         const expressApp = app({ databaseURI: getDatabaseURI({ testName }) });
 
-        const user = await supertest(expressApp)
-            .post(`/${Routes.users}`)
-            .send({ username: 'username' });
+        const user = await getUser(expressApp);
+
+        console.log(user);
 
         expect(user).toBeDefined();
     });
