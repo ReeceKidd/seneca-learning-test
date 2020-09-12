@@ -10,6 +10,7 @@ import {
     updateAverageForCourseMiddleware,
     getUpdateAverageForCourseMiddleware,
     getIncreaseStatsForCourseMiddleware,
+    getRetrieveCourseMiddleware,
 } from './createCourseSessionMiddlewares';
 import { ResponseCodes } from '../../Server/responseCodes';
 import { CustomError, ErrorType } from '../../customError';
@@ -67,6 +68,110 @@ describe('createCourseSessionMiddlewares', () => {
             createCourseSessionBodyValidationMiddleware(request, response, next);
 
             expect(next).toBeCalled();
+        });
+    });
+
+    describe('retrieveCourseMiddleware', () => {
+        test('sets response.locals.course', async () => {
+            expect.assertions(3);
+            const lean = jest.fn(() => Promise.resolve(true));
+            const findOne = jest.fn(() => ({ lean }));
+            const courseModel = {
+                findOne,
+            };
+            const courseId = 'abcd';
+            const request: any = { params: { courseId } };
+            const response: any = { locals: {} };
+            const next = jest.fn();
+            const middleware = getRetrieveCourseMiddleware(courseModel as any);
+
+            await middleware(request, response, next);
+
+            expect(findOne).toBeCalledWith({ _id: courseId });
+            expect(response.locals.course).toBeDefined();
+            expect(next).toBeCalledWith();
+        });
+
+        test('throws GetCourseNoCourseFound when course is not found', async () => {
+            expect.assertions(1);
+            const lean = jest.fn(() => Promise.resolve(false));
+            const findOne = jest.fn(() => ({ lean }));
+            const courseModel = {
+                findOne,
+            };
+            const courseId = 'abcd';
+            const request: any = { params: { courseId } };
+            const response: any = { locals: {} };
+            const next = jest.fn();
+            const middleware = getRetrieveCourseMiddleware(courseModel as any);
+
+            await middleware(request, response, next);
+
+            expect(next).toBeCalledWith(new CustomError(ErrorType.GetCourseNoCourseFound));
+        });
+
+        test('calls next with RetrieveCourseMiddleware error on middleware failure', async () => {
+            expect.assertions(1);
+            const errorMessage = 'error';
+            const lean = jest.fn(() => Promise.reject(errorMessage));
+            const findOne = jest.fn(() => ({ lean }));
+            const courseModel = {
+                findOne,
+            };
+            const courseId = 'abcd';
+            const request: any = { params: { courseId } };
+            const response: any = { locals: {} };
+            const next = jest.fn();
+            const middleware = getRetrieveCourseMiddleware(courseModel as any);
+
+            await middleware(request, response, next);
+
+            expect(next).toBeCalledWith(new CustomError(ErrorType.RetrieveCourseMiddleware, expect.any(Error)));
+        });
+    });
+
+    describe(`createCourseSessionFromRequestMiddleware`, () => {
+        test('sets response.locals.savedCourseSession', async () => {
+            expect.assertions(2);
+
+            const save = jest.fn().mockResolvedValue(true);
+
+            const courseModel = jest.fn(() => ({ save }));
+
+            const user = { _id: 'userId' };
+            const courseId = 'courseId';
+            const sessionId = 'ab1234';
+            const totalModulesStudied = 1;
+            const averageScore = 3;
+            const timeStudied = 5;
+            const response: any = { locals: { user } };
+            const request: any = {
+                params: { courseId },
+                body: { sessionId, totalModulesStudied, averageScore, timeStudied },
+            };
+            const next = jest.fn();
+
+            const middleware = getCreateCourseSessionFromRequestMiddleware(courseModel as any);
+
+            await middleware(request, response, next);
+
+            expect(response.locals.savedCourseSession).toBeDefined();
+            expect(next).toBeCalledWith();
+        });
+
+        test('calls next with CreateCourseSessionFromRequestMiddleware error on middleware failure', () => {
+            expect.assertions(1);
+
+            const response: any = {};
+            const request: any = {};
+            const next = jest.fn();
+            const middleware = getCreateCourseSessionFromRequestMiddleware({} as any);
+
+            middleware(request, response, next);
+
+            expect(next).toBeCalledWith(
+                new CustomError(ErrorType.CreateCourseSessionFromRequestMiddleware, expect.any(Error)),
+            );
         });
     });
 
@@ -180,51 +285,6 @@ describe('createCourseSessionMiddlewares', () => {
             middleware(request, response, next);
 
             expect(next).toBeCalledWith(new CustomError(ErrorType.UpdateAverageForCourseMiddleware, expect.any(Error)));
-        });
-    });
-
-    describe(`createCourseSessionFromRequestMiddleware`, () => {
-        test('sets response.locals.savedCourseSession', async () => {
-            expect.assertions(2);
-
-            const save = jest.fn().mockResolvedValue(true);
-
-            const courseModel = jest.fn(() => ({ save }));
-
-            const user = { _id: 'userId' };
-            const courseId = 'courseId';
-            const sessionId = 'ab1234';
-            const totalModulesStudied = 1;
-            const averageScore = 3;
-            const timeStudied = 5;
-            const response: any = { locals: { user } };
-            const request: any = {
-                params: { courseId },
-                body: { sessionId, totalModulesStudied, averageScore, timeStudied },
-            };
-            const next = jest.fn();
-
-            const middleware = getCreateCourseSessionFromRequestMiddleware(courseModel as any);
-
-            await middleware(request, response, next);
-
-            expect(response.locals.savedCourseSession).toBeDefined();
-            expect(next).toBeCalledWith();
-        });
-
-        test('calls next with CreateCourseSessionFromRequestMiddleware error on middleware failure', () => {
-            expect.assertions(1);
-
-            const response: any = {};
-            const request: any = {};
-            const next = jest.fn();
-            const middleware = getCreateCourseSessionFromRequestMiddleware({} as any);
-
-            middleware(request, response, next);
-
-            expect(next).toBeCalledWith(
-                new CustomError(ErrorType.CreateCourseSessionFromRequestMiddleware, expect.any(Error)),
-            );
         });
     });
 
