@@ -10,10 +10,8 @@ import { getDatabaseURI } from './setup/getDatabaseURI';
 
 import { createUser } from './helpers/createUser';
 import { createCourse } from './helpers/createCourse';
-import ApiVersions from '../src/Server/versions';
 import { Routes } from '../src/Routers';
 import { CourseRoutes } from '../src/Routers/coursesRouter';
-import { SessionModel } from '../src/Models/Session';
 import { createSession } from './helpers/createSession';
 
 jest.setTimeout(120000);
@@ -42,20 +40,30 @@ describe('Sessions', () => {
 
         const course = await createCourse({ expressApp, userId: user._id, courseName: 'Biology' });
 
-        const userSession = await createSession({ expressApp, userId: user._id, courseId: course._id });
+        const totalModulesStudied = 3;
+        const averageScore = 1.678;
+        const timeStudied = 30;
 
-        const route = `/${ApiVersions.v1}/${Routes.courses}/${course._id}/${CourseRoutes.sessions}/${userSession._id}`;
+        const userSession = await createSession({
+            expressApp,
+            userId: user._id,
+            courseId: course._id,
+            totalModulesStudied,
+            averageScore,
+            timeStudied,
+        });
+
+        const route = `/${Routes.courses}/${course._id}/${CourseRoutes.sessions}/${userSession.sessionId}`;
 
         const sessionResponse = await supertest(expressApp)
             .get(route)
             .set('X-User-Id', user._id);
 
-        const session = sessionResponse.body as SessionModel;
+        const session = sessionResponse.body;
 
-        expect(session.userId).toEqual(user._id);
-        expect(session.courseId).toEqual(course._id);
-        expect(session.totalModulesStudied).toEqual(0);
-        expect(session.averageScore).toEqual(0);
-        expect(session.timeStudied).toEqual(0);
+        expect(session.sessionId).toBeDefined();
+        expect(session.totalModulesStudied).toEqual(totalModulesStudied);
+        expect(session.averageScore).toEqual(1.68);
+        expect(session.timeStudied).toEqual(timeStudied);
     });
 });

@@ -27,7 +27,6 @@ export const createCourseSessionParamsValidationMiddleware = (
 };
 
 const createCourseSessionBodyValidationSchema = {
-    sessionId: Joi.string().required(),
     totalModulesStudied: Joi.number()
         .positive()
         .required(),
@@ -81,11 +80,10 @@ export const getCreateCourseSessionFromRequestMiddleware = (session: mongoose.Mo
         const user: UserModel = response.locals.user;
         const { courseId } = request.params;
         const averageScore: number = request.body.averageScore;
-        const { sessionId, totalModulesStudied, timeStudied } = request.body;
+        const { totalModulesStudied, timeStudied } = request.body;
         const newCourseSession = new session({
             userId: user._id,
             courseId,
-            sessionId,
             totalModulesStudied,
             averageScore: Number(averageScore.toFixed(2)),
             timeStudied,
@@ -124,8 +122,10 @@ export const getUpdateAverageForCourseMiddleware = (courseImport: mongoose.Model
     try {
         const course: CourseModel = response.locals.course;
         const averageScore: number = request.body.averageScore;
+
         if (!course.averageScore) {
             const roundedAverage = Number(averageScore.toFixed(2));
+            console.log();
             await courseImport.findByIdAndUpdate(course._id, { $set: { averageScore: roundedAverage } });
         } else {
             const updatedAverage = (course.averageScore + averageScore) / 2;
@@ -163,6 +163,7 @@ export const sendFormattedCourseSessionMiddleware = (
 export const createCourseSessionMiddlewares = [
     createCourseSessionParamsValidationMiddleware,
     createCourseSessionBodyValidationMiddleware,
+    retrieveCourseMiddleware,
     createCourseSessionFromRequestMiddleware,
     increaseStatsForCourseMiddleware,
     updateAverageForCourseMiddleware,

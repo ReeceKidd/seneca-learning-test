@@ -2,21 +2,29 @@ import supertest from 'supertest';
 import { Express } from 'express';
 
 import { Routes } from '../../src/Routers';
-import ApiVersions from '../../src/Server/versions';
-import { SessionModel } from '../../src/Models/Session';
-import { CourseRoutes } from '../../src/Routers/coursesRouter';
 
 export const createSession = async ({
     expressApp,
     userId,
     courseId,
+    totalModulesStudied,
+    averageScore,
+    timeStudied,
 }: {
     expressApp: Express;
     userId: string;
     courseId: string;
-}): Promise<SessionModel> => {
+    totalModulesStudied: number;
+    averageScore: number;
+    timeStudied: number;
+}): Promise<{ sessionId: string; totalModulesStudied: number; averageScore: number; timeStudied: number }> => {
     const courseResponse = await supertest(expressApp)
-        .post(`/${ApiVersions.v1}/${Routes.courses}/${courseId}/${CourseRoutes.sessions}`)
-        .set('X-User-Id', userId);
-    return courseResponse.body as SessionModel;
+        .post(`/${Routes.courses}/${courseId}`)
+        .set('X-User-Id', userId)
+        .send({
+            totalModulesStudied,
+            averageScore,
+            timeStudied,
+        });
+    return courseResponse.body;
 };
