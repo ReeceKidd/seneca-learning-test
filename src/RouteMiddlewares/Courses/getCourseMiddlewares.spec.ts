@@ -93,7 +93,10 @@ describe('sendCourseMiddleware', () => {
     test('sends course', () => {
         expect.assertions(2);
         const send = jest.fn();
-        const course = { _id: 'abc' };
+        const totalModulesStudied = 10;
+        const averageScore = 20;
+        const timeStudied = 30;
+        const course = { totalModulesStudied, averageScore, timeStudied };
         const request: any = {};
         const response: any = { locals: { course }, send };
         const next = jest.fn();
@@ -101,7 +104,7 @@ describe('sendCourseMiddleware', () => {
         sendCourseMiddleware(request, response, next);
 
         expect(next).not.toBeCalled();
-        expect(send).toBeCalledWith(course);
+        expect(send).toBeCalledWith({ totalModulesStudied, averageScore, timeStudied });
     });
 
     test('calls next with SendCourseMiddleware error on middleware failure', async () => {

@@ -1,10 +1,10 @@
 import supertest from 'supertest';
 import { Express } from 'express';
 
-import { Routes } from '../../src/Routers/versions/v1';
+import { Routes } from '../../src/Routers';
 import ApiVersions from '../../src/Server/versions';
 import { SessionModel } from '../../src/Models/Session';
-import { CourseRoutes } from '../../src/Routers/versions/v1/coursesRouter';
+import { CourseRoutes } from '../../src/Routers/coursesRouter';
 
 export const createSession = async ({
     expressApp,

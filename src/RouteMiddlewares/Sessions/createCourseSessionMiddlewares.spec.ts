@@ -293,14 +293,15 @@ describe('createCourseSessionMiddlewares', () => {
             expect.assertions(4);
             const send = jest.fn();
             const status = jest.fn(() => ({ send }));
+
             const courseId = 'courseId';
-            const sessionId = 'ab1234';
+            const _id = 'ab1234';
             const totalModulesStudied = 1;
             const averageScore = 3;
             const timeStudied = 5;
             const savedCourseSession = {
+                _id,
                 courseId,
-                sessionId,
                 totalModulesStudied,
                 averageScore,
                 timeStudied,
@@ -314,7 +315,12 @@ describe('createCourseSessionMiddlewares', () => {
             expect(response.locals.user).toBeUndefined();
             expect(next).toBeCalled();
             expect(status).toBeCalledWith(ResponseCodes.created);
-            expect(send).toBeCalledWith(savedCourseSession);
+            expect(send).toBeCalledWith({
+                sessionId: savedCourseSession._id,
+                totalModulesStudied,
+                averageScore,
+                timeStudied,
+            });
         });
 
         test('calls next with SendFormattedCourseSessionMiddleware error on middleware failure', () => {

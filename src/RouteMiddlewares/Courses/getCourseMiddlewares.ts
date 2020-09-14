@@ -42,7 +42,8 @@ export const retrieveCourseMiddleware = getRetrieveCourseMiddleware(courseModel)
 export const sendCourseMiddleware = (request: Request, response: Response, next: NextFunction): void => {
     try {
         const { course } = response.locals;
-        response.send(course);
+        const { totalModulesStudied, averageScore, timeStudied } = course;
+        response.send({ totalModulesStudied, averageScore, timeStudied });
     } catch (err) {
         next(new CustomError(ErrorType.SendCourseMiddleware, err));
     }

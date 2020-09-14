@@ -43,7 +43,13 @@ export const retrieveSessionMiddleware = getRetrieveSessionMiddleware(sessionMod
 export const sendSessionMiddleware = (request: Request, response: Response, next: NextFunction): void => {
     try {
         const { session } = response.locals;
-        response.send(session);
+        const { _id, totalModulesStudied, averageScore, timeStudied } = session;
+        response.send({
+            sessionId: _id,
+            totalModulesStudied,
+            averageScore,
+            timeStudied,
+        });
     } catch (err) {
         next(new CustomError(ErrorType.SendSessionMiddleware, err));
     }

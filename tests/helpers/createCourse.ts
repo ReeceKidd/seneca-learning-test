@@ -1,7 +1,7 @@
 import supertest from 'supertest';
 import { Express } from 'express';
 
-import { Routes } from '../../src/Routers/versions/v1';
+import { Routes } from '../../src/Routers';
 import ApiVersions from '../../src/Server/versions';
 import { CourseModel } from '../../src/Models/Course';
 

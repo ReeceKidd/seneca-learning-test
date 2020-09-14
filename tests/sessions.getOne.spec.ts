@@ -11,8 +11,8 @@ import { getDatabaseURI } from './setup/getDatabaseURI';
 import { createUser } from './helpers/createUser';
 import { createCourse } from './helpers/createCourse';
 import ApiVersions from '../src/Server/versions';
-import { Routes } from '../src/Routers/versions/v1';
-import { CourseRoutes } from '../src/Routers/versions/v1/coursesRouter';
+import { Routes } from '../src/Routers';
+import { CourseRoutes } from '../src/Routers/coursesRouter';
 import { SessionModel } from '../src/Models/Session';
 import { createSession } from './helpers/createSession';
 

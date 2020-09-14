@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { getSessionMiddlewares } from '../../../RouteMiddlewares/Sessions/getSessionMiddlewares';
-import { createUserMiddlewares } from '../../../RouteMiddlewares/Users/createUserMiddlewares';
+import { getSessionMiddlewares } from '../RouteMiddlewares/Sessions/getSessionMiddlewares';
+import { createUserMiddlewares } from '../RouteMiddlewares/Users/createUserMiddlewares';
 
 export const userId = 'userId';
 

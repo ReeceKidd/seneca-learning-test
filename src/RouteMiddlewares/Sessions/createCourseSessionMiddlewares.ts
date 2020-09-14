@@ -138,7 +138,13 @@ export const sendFormattedCourseSessionMiddleware = (
 ): void => {
     try {
         const { savedCourseSession } = response.locals;
-        response.status(ResponseCodes.created).send(savedCourseSession);
+        const { _id, totalModulesStudied, averageScore, timeStudied } = savedCourseSession;
+        response.status(ResponseCodes.created).send({
+            sessionId: _id,
+            totalModulesStudied,
+            averageScore,
+            timeStudied,
+        });
         next();
     } catch (err) {
         next(new CustomError(ErrorType.SendFormattedCourseSessionMiddleware, err));

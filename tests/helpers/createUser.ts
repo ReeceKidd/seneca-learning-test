@@ -2,7 +2,7 @@ import supertest from 'supertest';
 import { Express } from 'express';
 
 import { UserModel } from '../../src/Models/User';
-import { Routes } from '../../src/Routers/versions/v1';
+import { Routes } from '../../src/Routers';
 import ApiVersions from '../../src/Server/versions';
 
 export const createUser = async (expressApp: Express): Promise<UserModel> => {

@@ -94,7 +94,11 @@ describe('sendSessionMiddleware', () => {
     test('sends session', () => {
         expect.assertions(2);
         const send = jest.fn();
-        const session = { _id: 'abc' };
+        const _id = 'abc';
+        const totalModulesStudied = 10;
+        const averageScore = 30;
+        const timeStudied = 40;
+        const session = { _id: 'abc', totalModulesStudied, averageScore, timeStudied };
         const request: any = {};
         const response: any = { locals: { session }, send };
         const next = jest.fn();
@@ -102,7 +106,12 @@ describe('sendSessionMiddleware', () => {
         sendSessionMiddleware(request, response, next);
 
         expect(next).not.toBeCalled();
-        expect(send).toBeCalledWith(session);
+        expect(send).toBeCalledWith({
+            sessionId: _id,
+            totalModulesStudied,
+            averageScore,
+            timeStudied,
+        });
     });
 
     test('calls next with SendSessionMiddleware error on middleware failure', async () => {

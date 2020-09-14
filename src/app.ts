@@ -3,10 +3,8 @@ import * as bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
-import ApiVersions from './Server/versions';
-
 import { errorHandler } from './errorHandler';
-import v1Router from './Routers/versions/v1';
+import indexRouter from './Routers/index';
 
 dotenv.config();
 
@@ -29,7 +27,7 @@ export default ({ databaseURI }: { databaseURI: string }) => {
         console.log(err);
     });
 
-    app.use(`/${ApiVersions.v1}`, v1Router);
+    app.use(`/`, indexRouter);
 
     app.use(errorHandler);
 
