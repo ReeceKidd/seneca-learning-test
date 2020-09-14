@@ -11,14 +11,13 @@ import { getDatabaseURI } from './setup/getDatabaseURI';
 import { createUser } from './helpers/createUser';
 import { createCourse } from './helpers/createCourse';
 import { Routes } from '../src/Routers';
-import { CourseRoutes } from '../src/Routers/coursesRouter';
 import { createSession } from './helpers/createSession';
 
 jest.setTimeout(120000);
 
-const testName = 'sessions-get-one';
+const testName = 'courses-get-one';
 
-describe('Sessions', () => {
+describe('Courses', () => {
     let database: Mongoose;
     beforeAll(async () => {
         if (isTestEnvironment()) {
@@ -33,8 +32,8 @@ describe('Sessions', () => {
         }
     });
 
-    test('retrieves a single session', async () => {
-        expect.assertions(4);
+    test('retrieves course lifetime statistics', async () => {
+        expect.assertions(3);
         const expressApp = app({ databaseURI: getDatabaseURI({ testName }) });
 
         const user = await createUser(expressApp);
@@ -45,7 +44,7 @@ describe('Sessions', () => {
         const averageScore = 1.678;
         const timeStudied = 30;
 
-        const userSession = await createSession({
+        await createSession({
             expressApp,
             userId: user._id,
             courseId: course._id,
@@ -54,17 +53,16 @@ describe('Sessions', () => {
             timeStudied,
         });
 
-        const route = `/${Routes.courses}/${course._id}/${CourseRoutes.sessions}/${userSession.sessionId}`;
+        const route = `/${Routes.courses}/${course._id}/`;
 
-        const sessionResponse = await supertest(expressApp)
+        const coursesResponse = await supertest(expressApp)
             .get(route)
             .set('X-User-Id', user._id);
 
-        const session = sessionResponse.body;
+        const courseStatistics = coursesResponse.body;
 
-        expect(session.sessionId).toBeDefined();
-        expect(session.totalModulesStudied).toEqual(totalModulesStudied);
-        expect(session.averageScore).toEqual(1.68);
-        expect(session.timeStudied).toEqual(timeStudied);
+        expect(courseStatistics.totalModulesStudied).toEqual(totalModulesStudied);
+        expect(courseStatistics.averageScore).toEqual(1.68);
+        expect(courseStatistics.timeStudied).toEqual(timeStudied);
     });
 });
