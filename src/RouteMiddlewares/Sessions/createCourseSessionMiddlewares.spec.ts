@@ -11,6 +11,7 @@ import {
     getUpdateAverageForCourseMiddleware,
     getIncreaseStatsForCourseMiddleware,
     getRetrieveCourseMiddleware,
+    retrieveCourseMiddleware,
 } from './createCourseSessionMiddlewares';
 import { ResponseCodes } from '../../Server/responseCodes';
 import { CustomError, ErrorType } from '../../customError';
@@ -41,13 +42,11 @@ describe('createCourseSessionMiddlewares', () => {
         });
     });
     describe(`createCourseSessionBodyValidationMiddleware`, () => {
-        const sessionId = 'ab1234';
         const totalModulesStudied = 1;
         const averageScore = 3;
         const timeStudied = 5;
 
         const body = {
-            sessionId,
             totalModulesStudied,
             averageScore,
             timeStudied,
@@ -368,14 +367,15 @@ describe('createCourseSessionMiddlewares', () => {
     });
 
     test('that createCourseSession middlewares are defined in the correct order', async () => {
-        expect.assertions(7);
+        expect.assertions(8);
 
-        expect(createCourseSessionMiddlewares.length).toEqual(6);
+        expect(createCourseSessionMiddlewares.length).toEqual(7);
         expect(createCourseSessionMiddlewares[0]).toBe(createCourseSessionParamsValidationMiddleware);
         expect(createCourseSessionMiddlewares[1]).toBe(createCourseSessionBodyValidationMiddleware);
-        expect(createCourseSessionMiddlewares[2]).toBe(createCourseSessionFromRequestMiddleware);
-        expect(createCourseSessionMiddlewares[3]).toBe(increaseStatsForCourseMiddleware);
-        expect(createCourseSessionMiddlewares[4]).toBe(updateAverageForCourseMiddleware);
-        expect(createCourseSessionMiddlewares[5]).toBe(sendFormattedCourseSessionMiddleware);
+        expect(createCourseSessionMiddlewares[2]).toBe(retrieveCourseMiddleware);
+        expect(createCourseSessionMiddlewares[3]).toBe(createCourseSessionFromRequestMiddleware);
+        expect(createCourseSessionMiddlewares[4]).toBe(increaseStatsForCourseMiddleware);
+        expect(createCourseSessionMiddlewares[5]).toBe(updateAverageForCourseMiddleware);
+        expect(createCourseSessionMiddlewares[6]).toBe(sendFormattedCourseSessionMiddleware);
     });
 });
