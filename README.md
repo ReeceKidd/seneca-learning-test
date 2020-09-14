@@ -19,6 +19,10 @@ npm run unit-tests: For unit tests.
 npm run integration-tests: Runs an integration test for each of the routes defined in the YML file. No need
 to start the server as supertest will start a server for each of the tests.
 
+# Deploying to AWS
+
+I have included a script folder which includes the file that needs to be configured to deploy via a CI/CD pipeline.
+
 # Design thoughts
 
 I relied heavily on middlewares to ensure the architecture is flexible enough to be adapted quickly with further clarification around the requirements.
