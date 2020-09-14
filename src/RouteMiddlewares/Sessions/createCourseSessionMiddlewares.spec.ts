@@ -142,7 +142,7 @@ describe('createCourseSessionMiddlewares', () => {
             const courseId = 'courseId';
             const sessionId = 'ab1234';
             const totalModulesStudied = 1;
-            const averageScore = 3;
+            const averageScore = 3.6789;
             const timeStudied = 5;
             const response: any = { locals: { user } };
             const request: any = {
@@ -230,7 +230,7 @@ describe('createCourseSessionMiddlewares', () => {
                 _id: 'courseId',
             };
             const response: any = { locals: { course } };
-            const averageScore = 10;
+            const averageScore = 10.767483;
             const request: any = {
                 params: {},
                 body: { averageScore },
@@ -241,11 +241,11 @@ describe('createCourseSessionMiddlewares', () => {
 
             await middleware(request, response, next);
 
-            expect(findByIdAndUpdate).toBeCalledWith(course._id, { $set: { averageScore } });
+            expect(findByIdAndUpdate).toBeCalledWith(course._id, { $set: { averageScore: 10.77 } });
             expect(next).toBeCalledWith();
         });
 
-        test('if the course averageScore is it sets the averageScore to the average of the existing averageScore and the request.body.averageScore', async () => {
+        test('if the course averageScore exists it sets the averageScore to the average of the existing averageScore and the request.body.averageScore', async () => {
             expect.assertions(2);
 
             const findByIdAndUpdate = jest.fn().mockResolvedValue(true);
@@ -271,6 +271,35 @@ describe('createCourseSessionMiddlewares', () => {
             await middleware(request, response, next);
 
             expect(findByIdAndUpdate).toBeCalledWith(course._id, { $set: { averageScore } });
+            expect(next).toBeCalledWith();
+        });
+
+        test('if the course averageScore exists and the new average score equals a number to multiple decimal places it rounds the number to two places.', async () => {
+            expect.assertions(2);
+
+            const findByIdAndUpdate = jest.fn().mockResolvedValue(true);
+
+            const courseModel = {
+                findByIdAndUpdate,
+            };
+
+            const course = {
+                _id: 'courseId',
+                averageScore: 10,
+            };
+            const response: any = { locals: { course } };
+            const averageScore = 3.456667;
+            const request: any = {
+                params: {},
+                body: { averageScore },
+            };
+            const next = jest.fn();
+
+            const middleware = getUpdateAverageForCourseMiddleware(courseModel as any);
+
+            await middleware(request, response, next);
+
+            expect(findByIdAndUpdate).toBeCalledWith(course._id, { $set: { averageScore: 6.73 } });
             expect(next).toBeCalledWith();
         });
 

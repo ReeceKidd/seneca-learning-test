@@ -28,9 +28,15 @@ export const createCourseSessionParamsValidationMiddleware = (
 
 const createCourseSessionBodyValidationSchema = {
     sessionId: Joi.string().required(),
-    totalModulesStudied: Joi.number().required(),
-    averageScore: Joi.number().required(),
-    timeStudied: Joi.number().required(),
+    totalModulesStudied: Joi.number()
+        .positive()
+        .required(),
+    averageScore: Joi.number()
+        .positive()
+        .required(),
+    timeStudied: Joi.number()
+        .positive()
+        .required(),
 };
 
 export const createCourseSessionBodyValidationMiddleware = (
@@ -74,13 +80,14 @@ export const getCreateCourseSessionFromRequestMiddleware = (session: mongoose.Mo
     try {
         const user: UserModel = response.locals.user;
         const { courseId } = request.params;
-        const { sessionId, totalModulesStudied, averageScore, timeStudied } = request.body;
+        const averageScore: number = request.body.averageScore;
+        const { sessionId, totalModulesStudied, timeStudied } = request.body;
         const newCourseSession = new session({
             userId: user._id,
             courseId,
             sessionId,
             totalModulesStudied,
-            averageScore,
+            averageScore: Number(averageScore.toFixed(2)),
             timeStudied,
         });
         response.locals.savedCourseSession = await newCourseSession.save();
@@ -116,12 +123,14 @@ export const getUpdateAverageForCourseMiddleware = (courseImport: mongoose.Model
 ): Promise<void> => {
     try {
         const course: CourseModel = response.locals.course;
-        const { averageScore } = request.body;
+        const averageScore: number = request.body.averageScore;
         if (!course.averageScore) {
-            await courseImport.findByIdAndUpdate(course._id, { $set: { averageScore } });
+            const roundedAverage = Number(averageScore.toFixed(2));
+            await courseImport.findByIdAndUpdate(course._id, { $set: { averageScore: roundedAverage } });
         } else {
             const updatedAverage = (course.averageScore + averageScore) / 2;
-            await courseImport.findByIdAndUpdate(course._id, { $set: { averageScore: updatedAverage } });
+            const roundedAverage = Number(updatedAverage.toFixed(2));
+            await courseImport.findByIdAndUpdate(course._id, { $set: { averageScore: roundedAverage } });
         }
         next();
     } catch (err) {
